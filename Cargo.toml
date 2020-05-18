@@ -1,0 +1,10 @@
+[package]
+name = "branchswitch"
+version = "0.1.0"
+authors = ["alexmorten <alexandrius.martinus@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sha1 = "0.6.0"
