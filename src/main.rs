@@ -53,7 +53,7 @@ fn main() {
     }
 }
 
-// #[derive(Copy, Clone)]
+#[derive(Copy, Clone)]
 struct DependencyDefinition<'a> {
     file: &'a Path,
     install_cmd: Cmd<'a>,
@@ -74,19 +74,13 @@ impl DependencyDefinition<'_> {
         let checksum = self.checksum()?;
 
         Ok(ChecksumedDependencyDefinition {
-            definition: DependencyDefinition {
-                file: self.file.clone(),
-                install_cmd: Cmd {
-                    cmd: self.install_cmd.cmd.clone(),
-                    args: self.install_cmd.args.clone(),
-                },
-            },
+            definition: self.clone(),
             checksum_before_switch: checksum,
         })
     }
 }
 
-// #[derive(Copy, Clone)]
+#[derive(Copy, Clone)]
 struct Cmd<'a> {
     cmd: &'a str,
     args: &'a [&'a str],
