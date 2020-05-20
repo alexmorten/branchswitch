@@ -86,13 +86,12 @@ fn main() {
     }
 }
 
-#[derive(Copy, Clone)]
 struct DependencyDefinition<'a> {
     file: &'a Path,
     install_cmd: Cmd<'a>,
 }
 
-impl DependencyDefinition<'_> {
+impl<'a> DependencyDefinition<'a> {
     fn checksum(&self) -> io::Result<String> {
         let mut buffer = Vec::new();
 
@@ -103,17 +102,16 @@ impl DependencyDefinition<'_> {
 
         Ok(m.digest().to_string())
     }
-    fn note_checksum(&self) -> io::Result<ChecksumedDependencyDefinition> {
+    fn note_checksum(&'a self) -> io::Result<ChecksumedDependencyDefinition<'a>> {
         let checksum = self.checksum()?;
 
         Ok(ChecksumedDependencyDefinition {
-            definition: self.clone(),
+            definition: self,
             checksum_before_switch: checksum,
         })
     }
 }
 
-#[derive(Copy, Clone)]
 struct Cmd<'a> {
     cmd: &'a str,
     args: &'a [&'a str],
@@ -137,7 +135,7 @@ impl Cmd<'_> {
 }
 
 struct ChecksumedDependencyDefinition<'a> {
-    definition: DependencyDefinition<'a>,
+    definition: &'a DependencyDefinition<'a>,
     checksum_before_switch: String,
 }
 
